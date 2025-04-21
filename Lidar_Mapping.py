@@ -28,7 +28,7 @@ class OccupancyGridMapper:
         self.map_width = 300  # 30 meters 
         self.map_height = 300 # 30 meters 
         self.map_origin_x = -15.0
-        self.map_origin_y = -15.0
+        self.map_origin_y = -10.0
         self.robot_radius_m = 0.15
         self.robot_radius_cells = int(self.robot_radius_m / self.resolution)
 
