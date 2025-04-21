@@ -3,3 +3,5 @@
 ## Overview
 
 Our Firsty Team designed an integrated ROS2 python script that subscribes and publishes to a create3 robot in order to produce an ocupancy map. The map displays a 2D immage with obstacles (black), free-space (white), and unknown (red). A grey dot (cross) is displayed to represent the current locaiton of the robot. Script is able to update in live-time and reset the map with a keystroke ('r').
+
+![image](https://github.com/odoy25/EW458-Final-Project/blob/main/Hopper_Hall_LIDAR_scan.png)
