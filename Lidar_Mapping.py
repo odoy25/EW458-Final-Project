@@ -25,10 +25,10 @@ class OccupancyGridMapper:
 
         # Robot and map parameters
         self.resolution = 0.1 # 0.1 meters / cell
-        self.map_width = 300  # 30 meters 
-        self.map_height = 300 # 30 meters 
-        self.map_origin_x = -15.0
-        self.map_origin_y = -10.0
+        self.map_width = 600  # 60 meters 
+        self.map_height = 600 # 60 meters 
+        self.map_origin_x = -30.0
+        self.map_origin_y = -30.0
         self.robot_radius_m = 0.15
         self.robot_radius_cells = int(self.robot_radius_m / self.resolution)
 
@@ -181,7 +181,7 @@ class OccupancyGridMapper:
 
         # MAX and MIN range settings of LIDAR 
         min_valid_range = 0.25 # meters
-        max_valid_range = 5.0  # LIDAR range is 30 meters however max_valid_range set to 5 meters for more accurate ODOM map
+        max_valid_range = 15.0  # LIDAR range is 30 meters however max_valid_range set to 5 meters for more accurate ODOM map
 
         # Iterate over all of the LIDAR rays and look at that rays' specific angle and range
         for i, (r, a) in enumerate(zip(self.ranges, self.angs)): # zip a range angle pair into a tuple then enumerate (index) the range and angle pair
@@ -304,7 +304,7 @@ class OccupancyGridMapper:
             else:
                 print("No map data to publish")
 
-            time.sleep(5)  # mapping frequency
+            time.sleep(2)  # mapping frequency
 
 
 # Example of how to initialize and run the mapper
