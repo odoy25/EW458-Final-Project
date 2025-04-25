@@ -35,6 +35,4 @@ The map displays a 2D image with obstacles (black), free-space (white), and unkn
 
 ## How Code Works
 
-
-
-![image](Hopper_Hall_LIDAR_scan.png)
+![image](HKO_map1.gif)
