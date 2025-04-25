@@ -45,7 +45,6 @@ The YDLidar TG30 is a 360-degree laser scanner that measures distances from 0.1 
 
 ![image](LIDAR.jpg)
 
-
 ## How It Works
 
 This program builds and publishes a real-time occupancy grid map showing obstacles (occupied), free space, and unknown areas as the robot moves and scans its environment.
