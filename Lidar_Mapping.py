@@ -24,9 +24,9 @@ class OccupancyGridMapper:
         self.scan_topic = roslibpy.Topic(self.ros, f'/{self.robot_name}/scan', 'sensor_msgs/LaserScan')
 
         # Robot and map parameters
-        self.resolution = 0.1 # 0.1 meters / cell
-        self.map_width = 600  # 60 meters 
-        self.map_height = 600 # 60 meters 
+        self.resolution = 0.2 # 0.1 meters / cell
+        self.map_width = 300  # 60 meters 
+        self.map_height = 300 # 60 meters 
         self.map_origin_x = -30.0
         self.map_origin_y = -30.0
         self.robot_radius_m = 0.15
@@ -49,7 +49,7 @@ class OccupancyGridMapper:
         self.persistent_map = [-1] * (self.map_width * self.map_height)
 
         # Rest ODOM (X - Front) (Y - Left) (Z - Up)
-        self.reset_odometry()
+        #self.reset_odometry()
 
         # Subscribe to ROS Topics
         self.odom_topic.subscribe(self.callback_odom)
@@ -164,7 +164,7 @@ class OccupancyGridMapper:
             print("LIDAR data empty")
             return None
 
-        MAX_CONFIDENCE = 10
+        MAX_CONFIDENCE = 4
 
         def set_cell(xi, yi, is_occupied):
             if 0 <= xi < self.map_width and 0 <= yi < self.map_height:
@@ -181,7 +181,7 @@ class OccupancyGridMapper:
 
         # MAX and MIN range settings of LIDAR 
         min_valid_range = 0.25 # meters
-        max_valid_range = 15.0  # LIDAR range is 30 meters however max_valid_range set to 5 meters for more accurate ODOM map
+        max_valid_range = 25.0  # LIDAR range is 30 meters however max_valid_range set to 5 meters for more accurate ODOM map
 
         # Iterate over all of the LIDAR rays and look at that rays' specific angle and range
         for i, (r, a) in enumerate(zip(self.ranges, self.angs)): # zip a range angle pair into a tuple then enumerate (index) the range and angle pair
@@ -231,8 +231,8 @@ class OccupancyGridMapper:
 
             set_cell(x1, y1, is_occupied=True)  # Hit point = occupied
 
-        hit_threshold = 3
-        miss_threshold = 5
+        hit_threshold = 2
+        miss_threshold = 4
 
         # This will mark a cell as being "Free" or "Occupied"
         for idx in range(len(self.persistent_map)):
@@ -304,10 +304,10 @@ class OccupancyGridMapper:
             else:
                 print("No map data to publish")
 
-            time.sleep(2)  # mapping frequency
+            time.sleep(5)  # mapping frequency
 
 
 # Example of how to initialize and run the mapper
 if __name__ == "__main__":
-    mapper = OccupancyGridMapper(ip='192.168.8.104', port=9012, robot_name='echo', topic_name="mapmike")
+    mapper = OccupancyGridMapper(ip='192.168.8.104', port=9012, robot_name='juliet', topic_name="mapmike")
     mapper.start_mapping()
