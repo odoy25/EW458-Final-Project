@@ -44,10 +44,6 @@ Atthe beginning of the trial, all cells are unknown (-1). As the vehicle continu
 
 ## How It Works
 
-
-
-## How Code Works
-
 This program builds and publishes a real-time occupancy grid map showing obstacles (occupied), free space, and unknown areas as the robot moves and scans its environment.
 
 ROS Connection: Connects to a robot via WebSocket using roslibpy.
