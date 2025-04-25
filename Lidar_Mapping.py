@@ -48,8 +48,8 @@ class OccupancyGridMapper:
         self.miss_counts = [0] * (self.map_width * self.map_height)
         self.persistent_map = [-1] * (self.map_width * self.map_height)
 
-        # Rest ODOM (X - Front) (Y - Left) (Z - Up)
-        #self.reset_odometry()
+        # Rest ODOM (X --> Front) (Y --> Left) (Z --> Up)
+        self.reset_odometry()
 
         # Subscribe to ROS Topics
         self.odom_topic.subscribe(self.callback_odom)
@@ -146,7 +146,7 @@ class OccupancyGridMapper:
             t0, t1 = self.odom_buffer[i]['time'], self.odom_buffer[i + 1]['time'] # loop through the two ODOM timestamps (t0 and t1)
             if t0 <= query_time <= t1: # found two ODOM positions that "surround" the desired time
                 alpha = (query_time - t0) / (t1 - t0) # calculates ratio between 0 and 1 to see how far query_time is between t0 and t1
-                # Linear Interpolation of x and y positions
+                # Linear Interpolation of x and y positions utilizing alpha
                 x = (1 - alpha) * self.odom_buffer[i]['x'] + alpha * self.odom_buffer[i + 1]['x']
                 y = (1 - alpha) * self.odom_buffer[i]['y'] + alpha * self.odom_buffer[i + 1]['y']
                 # Angle Interpolation of yaw
@@ -180,15 +180,15 @@ class OccupancyGridMapper:
         robot_grid_y = int((self.y - self.map_origin_y) / self.resolution)
 
         # MAX and MIN range settings of LIDAR 
-        min_valid_range = 0.25 # meters
-        max_valid_range = 25.0  # LIDAR range is 30 meters however max_valid_range set to 5 meters for more accurate ODOM map
+        min_valid_range = 0.25  # meters
+        max_valid_range = 25.0  # LIDAR range is 30 meters however max_valid_range set to 25 meters for more accurate ODOM map
 
         # Iterate over all of the LIDAR rays and look at that rays' specific angle and range
         for i, (r, a) in enumerate(zip(self.ranges, self.angs)): # zip a range angle pair into a tuple then enumerate (index) the range and angle pair
             if not (min_valid_range < r < max_valid_range): # only look at LIDAR rays inbetween the MAX and MIN range
                 continue
 
-            # Estimate robot's position at the exact time the scan was taken using Interpolation
+            # Estimate robot's position at the exact/near time the scan was taken using Interpolation
             time_offset = (i / len(self.ranges)) * self.scan_duration # calculate any offset time from the scan time
             ray_time = self.scan_time + time_offset 
 
@@ -237,11 +237,11 @@ class OccupancyGridMapper:
         # This will mark a cell as being "Free" or "Occupied"
         for idx in range(len(self.persistent_map)):
             if self.hit_counts[idx] >= hit_threshold:
-                self.persistent_map[idx] = 100
+                self.persistent_map[idx] = 100 # Black blocks/cells
             elif self.miss_counts[idx] >= miss_threshold:
-                self.persistent_map[idx] = 0
+                self.persistent_map[idx] = 0   # White blocks/cells
             else:
-                self.persistent_map[idx] = -1
+                self.persistent_map[idx] = -1  # Red blocks/cells
 
         # Create a copy of the persistent map for publishing
         map_with_robot = self.persistent_map[:]
@@ -267,7 +267,7 @@ class OccupancyGridMapper:
                 idx = arrow_yi * self.map_width + arrow_xi
                 map_with_robot[idx] = 75  # Arbitrary value to show arrow (darker than robot circle)
 
-
+        # Occupancy Map message ROS format
         grid_msg = {
             'header': {
                 'frame_id': 'odom',
@@ -288,13 +288,14 @@ class OccupancyGridMapper:
         return grid_msg
     
     def start_mapping(self):
+        """Main Function"""
         print("Press 'r' to reset the map.")
         while self.ros.is_connected:
             # Check for reset key
             if keyboard.is_pressed('r'):
                 self.reset_map()
                 time.sleep(0.5)  # debounce to avoid rapid multiple resets
-                print("Map has been reset")
+                print("Map has been reset") # This will only reset the Occupancy Map (NOT the ODOM) orginal origin will remain the same
 
             # Send mapping message
             grid_msg = self.make_grid()
@@ -307,7 +308,7 @@ class OccupancyGridMapper:
             time.sleep(5)  # mapping frequency
 
 
-# Example of how to initialize and run the mapper
+# Initialize and run the mapper
 if __name__ == "__main__":
     mapper = OccupancyGridMapper(ip='192.168.8.104', port=9012, robot_name='juliet', topic_name="mapmike")
     mapper.start_mapping()
