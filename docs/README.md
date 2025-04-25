@@ -37,9 +37,13 @@ In order for an unmanned system to navigate through an environment, it must have
 
 An Occupancy Grid divides a space into small squares (in 2D) or cubes (in 3D), each referred to as a cell. Each cell is assigned a numerical value to represent a feature of the environment, in this case whether it is free space (0), occupied by an obstacle (100), or unknown (-1). The system’s odometry provides an estimate of its position, which is used to build the map over time. LiDAR measurements are also incorporated, which provide data on the location of obstacles relative to the robot’s frame of reference. For each LiDAR measurement, the obstacle’s location is calculated in the odometry reference frame, and the nearest cell is assigned a value if it achieves a high probability of fulfulling one of the listed values. 
 
-Atthe beginning of the trial, all cells are unknown (-1). As the vehicle continues to move and gather more sensor data, the occupancy grid is continually updated until the environment is entirely mapped, now incorporting free or occupied space,  allowing for future navigation and path planning.
+At the beginning of the trial, all cells are unknown (-1). As the vehicle continues to move and gather more sensor data, the occupancy grid is continually updated until the environment is entirely mapped, now incorporting free or occupied space,  allowing for future navigation and path planning.
 
 ## TG30 LIDAR 
+
+The YDLidar TG30 is a 360-degree laser scanner that measures distances from 0.1 m to 30 m with a minimum angle resolution of 0.13 degrees. It updates at about 7 Hz, with data collected at different angles relative to the sensor. The Raspberry Pi reads this data from the LiDAR and publishes it to the ROS2 network on the /robotName/scan topic, where it’s packaged in a sensor_msgs/LaserScan message. The Raspberry Pi and LiDAR are powered by a power module, and the Raspberry Pi is mounted in the robot’s storage tray.
+
+![image](LIDAR.jpg)
 
 
 ## How It Works
