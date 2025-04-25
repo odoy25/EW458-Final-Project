@@ -5,19 +5,30 @@
 ## Install Dependencies
 
 Clone repository:
-
-roslibpy
-terminal 
+```
+https://github.com/odoy25/EW458-Final-Project.git
+```
+roslibpy:
+```
 pip install roslibpy 
+```
+deque:
+```
+pip install deque
+```
 ---
 
 ## Overview
 
 Our Firstie Team designed an integrated ROS2 python script that subscribes and publishes to a create3 robot in order to produce an ocupancy map. 
 
+Internal Odometry and LIDAR scan messages are subscribed from the create3 and sent over a LAN network to a computer node. Visual Studio Code proccess these messages, calculates, creates and then publishes a ROS Occupancy message to the robot. 
 
-The map displays a 2D image with obstacles (black), free-space (white), and unknown (red). A grey dot (cross) is displayed to represent the current locaiton of the robot. Script is able to update in live-time and reset the map with a keystroke ('r').
+The map can be viewed through the robot's IP address and map topic while the node is connected to the same network.
 
+The map displays a 2D image with obstacles (black), free-space (white), and unknown (red). A grey dot (cross) is displayed to represent the robot's current locaiton. 
+
+![image](Hopper_Hall_LIDAR_scan.png)
 
 ## What is an Occupancy Map?
 In order for an unmanned system to navigate through an environment, it must have an understanding of what obstacles or other features might lie in its path. Typically this information is displayed on a map. Figuring out where that system lies on a map without outside help like GPS is a process known as **localization**. The standard map used for localization with robotics and their navigation is called an **Occupancy Grid**.
@@ -32,5 +43,7 @@ Atthe beginning of the trial, all cells are unknown (-1). As the vehicle continu
 ## How It Works
 
 
+
+## How Code Works
 
 ![image](HKO_map1.gif)
