@@ -29,6 +29,4 @@ The map displays a 2D image with obstacles (black), free-space (white), and unkn
 
 ## How It Works
 
-
-
-![image](K+HKO_map1.gif)
+![image](HKO_map1.gif)
