@@ -27,6 +27,8 @@ The map can be viewed through the robot's IP address and map topic while the nod
 
 The map displays a 2D image with obstacles (black), free-space (white), and unknown (red). A grey dot (cross) is displayed to represent the robot's current locaiton. 
 
+![image](Hopper_Hall_LIDAR_scan.png)
+
 ## What is an Occupancy Map?
 
 
