@@ -31,4 +31,4 @@ The map displays a 2D image with obstacles (black), free-space (white), and unkn
 
 
 
-![image](Hopper_Hall_LIDAR_scan.png)
+![image](K+HKO_map1.gif)
